@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide — MaghrebTV APK</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9963A; --gold-light: #E8B96A; --deep: #0A0A0F;
+    --panel: #111118; --surface: #181820; --border: #2A2A35;
+    --text: #E8E0D0; --muted: #7A7480; --green: #40C980; --blue: #4080C9;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--deep); color:var(--text); font-family:'Tajawal',sans-serif; padding:40px 20px; }
+  .wrap { max-width:780px; margin:0 auto; }
+
+  h1 { font-family:'Cormorant Garamond',serif; font-size:36px; color:var(--gold-light); margin-bottom:6px; }
+  .subtitle { color:var(--muted); font-size:14px; margin-bottom:40px; letter-spacing:0.05em; }
+
+  .step { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:24px 28px; margin-bottom:20px; position:relative; }
+  .step-num { position:absolute; top:-14px; left:24px; background:var(--gold); color:#000; font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.1em; }
+  .step h2 { font-size:18px; font-weight:600; color:var(--text); margin-bottom:10px; margin-top:6px; }
+  .step p { font-size:14px; color:var(--muted); line-height:1.8; margin-bottom:10px; }
+  .step p:last-child { margin-bottom:0; }
+
+  .cmd { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px 16px; font-family:monospace; font-size:13px; color:var(--blue); margin:10px 0; word-break:break-all; }
+
+  .tip { background:rgba(201,150,58,0.08); border:1px solid rgba(201,150,58,0.2); border-radius:8px; padding:12px 16px; font-size:13px; color:var(--gold-light); margin-top:12px; line-height:1.7; }
+  .warn { background:rgba(201,80,58,0.08); border:1px solid rgba(201,80,58,0.2); border-radius:8px; padding:12px 16px; font-size:13px; color:#E88A6A; margin-top:12px; line-height:1.7; }
+
+  ul { padding-left:20px; margin:10px 0; }
+  ul li { font-size:14px; color:var(--muted); line-height:2; }
+  ul li strong { color:var(--text); }
+
+  .badge { display:inline-block; background:rgba(64,128,201,0.15); color:var(--blue); border-radius:4px; font-size:11px; padding:2px 8px; font-weight:700; margin-right:4px; }
+  .badge.green { background:rgba(64,201,128,0.15); color:var(--green); }
+  .badge.gold { background:rgba(201,150,58,0.15); color:var(--gold); }
+
+  .dl-box { background:rgba(64,201,128,0.06); border:1px solid rgba(64,201,128,0.2); border-radius:10px; padding:20px; text-align:center; margin-bottom:30px; }
+  .dl-box p { color:var(--green); font-size:15px; font-weight:600; margin-bottom:6px; }
+  .dl-box small { color:var(--muted); font-size:12px; }
+
+  .divider { border:none; border-top:1px solid var(--border); margin:30px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>📱 Guide d'installation MaghrebTV</h1>
+  <p class="subtitle">Créer l'APK Android avec Android Studio · Guide pas à pas</p>
+
+  <div class="dl-box">
+    <p>✅ Projet Android Studio prêt → MaghrebTV-AndroidStudio.zip</p>
+    <small>Contient tout le code source · À ouvrir dans Android Studio</small>
+  </div>
+
+  <!-- ÉTAPE 1 -->
+  <div class="step">
+    <div class="step-num">ÉTAPE 1</div>
+    <h2>Installer Java (JDK)</h2>
+    <p>Android Studio a besoin de Java pour fonctionner. Télécharge et installe :</p>
+    <div class="cmd">https://adoptium.net → Télécharger JDK 17 LTS</div>
+    <p>Installe-le normalement (Suivant → Suivant → Terminer).</p>
+    <div class="tip">💡 Si Java est déjà installé sur ton PC, passe directement à l'étape 2.</div>
+  </div>
+
+  <!-- ÉTAPE 2 -->
+  <div class="step">
+    <div class="step-num">ÉTAPE 2</div>
+    <h2>Installer Android Studio</h2>
+    <p>Télécharge Android Studio (gratuit, officiel Google) :</p>
+    <div class="cmd">https://developer.android.com/studio</div>
+    <ul>
+      <li>Clique <strong>Download Android Studio</strong></li>
+      <li>Lance l'installeur → accepte les options par défaut</li>
+      <li>Au premier démarrage, laisse Android Studio télécharger le <strong>SDK Android</strong> (peut prendre 10–20 min)</li>
+    </ul>
+    <div class="tip">💡 Espace requis : environ 8 Go. Assure-toi d'avoir de la place sur ton disque.</div>
+  </div>
+
+  <!-- ÉTAPE 3 -->
+  <div class="step">
+    <div class="step-num">ÉTAPE 3</div>
+    <h2>Ouvrir le projet MaghrebTV</h2>
+    <ul>
+      <li>Dézippe le fichier <strong>MaghrebTV-AndroidStudio.zip</strong> sur ton bureau</li>
+      <li>Dans Android Studio → clique <strong>Open</strong> (ou File → Open)</li>
+      <li>Navigue jusqu'au dossier <strong>MaghrebTV</strong> dézippé</li>
+      <li>Clique <strong>OK</strong></li>
+    </ul>
+    <p>Android Studio va analyser le projet et télécharger les dépendances (1–3 min).</p>
+    <div class="tip">💡 Tu verras une barre de progression en bas. Attends qu'elle disparaisse avant de continuer.</div>
+  </div>
+
+  <!-- ÉTAPE 4 -->
+  <div class="step">
+    <div class="step-num">ÉTAPE 4</div>
+    <h2>Générer l'APK</h2>
+    <p>Dans le menu Android Studio :</p>
+    <ul>
+      <li>Clique <strong>Build</strong> (menu en haut)</li>
+      <li>Puis <strong>Build Bundle(s) / APK(s)</strong></li>
+      <li>Puis <strong>Build APK(s)</strong></li>
+    </ul>
+    <p>Attends 2–5 minutes. Une notification apparaît en bas :</p>
+    <div class="tip">✅ <strong>"APK(s) generated successfully"</strong> → Clique <strong>"locate"</strong> pour trouver le fichier APK.</div>
+    <p style="margin-top:10px">L'APK se trouve dans :</p>
+    <div class="cmd">MaghrebTV/app/build/outputs/apk/debug/app-debug.apk</div>
+  </div>
+
+  <!-- ÉTAPE 5 -->
+  <div class="step">
+    <div class="step-num">ÉTAPE 5</div>
+    <h2>Installer l'APK sur ton téléphone Android</h2>
+    <p><strong>Option A — Via câble USB</strong></p>
+    <ul>
+      <li>Branche ton téléphone au PC</li>
+      <li>Sur le téléphone → <strong>Paramètres → Options développeur → Débogage USB</strong> (activer)</li>
+      <li>Dans Android Studio → clique le bouton ▶ vert en haut → sélectionne ton téléphone</li>
+      <li>L'app s'installe et se lance automatiquement 🎉</li>
+    </ul>
+    <hr style="border-color:var(--border);margin:16px 0">
+    <p><strong>Option B — Copier l'APK directement</strong></p>
+    <ul>
+      <li>Copie le fichier <strong>app-debug.apk</strong> sur ton téléphone (WhatsApp, email, USB…)</li>
+      <li>Sur le téléphone → ouvre le fichier APK</li>
+      <li>Autorise <strong>"Sources inconnues"</strong> si demandé → Installer</li>
+    </ul>
+    <div class="warn">⚠️ Si ton téléphone bloque l'installation : Paramètres → Sécurité → Activer "Installer des apps inconnues"</div>
+  </div>
+
+  <!-- ÉTAPE 6 -->
+  <div class="step">
+    <div class="step-num">BONUS</div>
+    <h2>Activer les options développeur sur Android</h2>
+    <p>Pour activer le débogage USB (Option A) :</p>
+    <ul>
+      <li>Paramètres → <strong>À propos du téléphone</strong></li>
+      <li>Clique <strong>7 fois</strong> sur <strong>"Numéro de build"</strong></li>
+      <li>Les <strong>Options développeur</strong> apparaissent dans Paramètres</li>
+      <li>Active <strong>Débogage USB</strong></li>
+    </ul>
+    <div class="tip">💡 Fonctionne sur Samsung, Xiaomi, Huawei, OnePlus… la manipulation est identique.</div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="text-align:center;color:var(--muted);font-size:13px;line-height:2">
+    <div style="font-size:28px;margin-bottom:8px">🕌</div>
+    MaghrebTV · Chaînes marocaines + Traduction Darija<br>
+    Projet généré avec Claude · Anthropic
+  </div>
+
+</div>
+</body>
+</html>
