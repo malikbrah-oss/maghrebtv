@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarocTV — Chaînes & Traduction Darija</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9963A;
+    --gold-light: #E8B96A;
+    --gold-dim: #7A5A20;
+    --deep: #0A0A0F;
+    --panel: #111118;
+    --surface: #181820;
+    --border: #2A2A35;
+    --text: #E8E0D0;
+    --muted: #7A7480;
+    --red: #C94040;
+    --green: #40C980;
+    --blue: #4080C9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Geometric background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(201,150,58,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(201,150,58,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Zellige pattern overlay */
+  .zellige-bg {
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: 
+      repeating-linear-gradient(45deg, var(--gold) 0px, var(--gold) 1px, transparent 1px, transparent 30px),
+      repeating-linear-gradient(-45deg, var(--gold) 0px, var(--gold) 1px, transparent 1px, transparent 30px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 20px rgba(201,150,58,0.3);
+  }
+
+  .logo-text h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .logo-text span {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .header-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--muted);
+    animation: pulse 2s infinite;
+  }
+  .dot.live { background: var(--red); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr 320px;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* ── SIDEBAR — CHANNELS ── */
+  .sidebar-channels {
+    grid-row: 1 / 3;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+  }
+
+  .sidebar-header h2 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .sidebar-header .count {
+    margin-left: auto;
+    background: var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .search-wrap {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap input:focus { border-color: var(--gold-dim); }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  .channels-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+
+  .channels-list::-webkit-scrollbar { width: 4px; }
+  .channels-list::-webkit-scrollbar-track { background: transparent; }
+  .channels-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .channel-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .channel-item:hover { background: var(--surface); }
+  .channel-item.active {
+    background: rgba(201,150,58,0.1);
+    border-left-color: var(--gold);
+  }
+
+  .ch-logo {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .ch-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .ch-info { flex: 1; min-width: 0; }
+  .ch-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ch-quality {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .ch-quality .hd-badge {
+    display: inline-block;
+    background: rgba(64,128,201,0.2);
+    color: var(--blue);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .ch-live {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+  }
+
+  /* ── VIDEO PLAYER ── */
+  .player-section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .video-wrap {
+    position: relative;
+    background: #000;
+    aspect-ratio: 16/9;
+  }
+
+  .video-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: linear-gradient(135deg, #0a0a0f 0%, #12121a 100%);
+    min-height: 280px;
+  }
+
+  .play-circle {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: 2px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: rgba(201,150,58,0.05);
+  }
+  .play-circle:hover {
+    background: rgba(201,150,58,0.15);
+    border-color: var(--gold);
+    transform: scale(1.05);
+  }
+
+  .placeholder-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Subtitles overlay */
+  .subtitle-overlay {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .subtitle-text {
+    display: inline-block;
+    background: rgba(0,0,0,0.82);
+    color: #fff;
+    font-size: 16px;
+    padding: 6px 16px;
+    border-radius: 6px;
+    border-left: 3px solid var(--gold);
+    line-height: 1.5;
+    backdrop-filter: blur(4px);
+    animation: fadeInUp 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Player controls */
+  .player-controls {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .now-playing {
+    flex: 1;
+  }
+  .now-playing .channel-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .now-playing .channel-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .ctrl-btn {
+    background: var(--border);
+    border: none;
+    border-radius: 8px;
+    color: var(--text);
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Tajawal', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ctrl-btn:hover { background: var(--gold-dim); color: #fff; }
+  .ctrl-btn.active { background: var(--gold); color: #000; font-weight: 600; }
+
+  /* ── TRANSLATION PANEL ── */
+  .translation-panel {
+    grid-row: 1 / 3;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .panel-header h2 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    flex: 1;
+  }
+
+  .lang-toggle {
+    display: flex;
+    gap: 6px;
+  }
+
+  .lang-btn {
+    background: var(--border);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    padding: 4px 9px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Tajawal', sans-serif;
+  }
+  .lang-btn.active {
+    background: rgba(201,150,58,0.15);
+    border-color: var(--gold-dim);
+    color: var(--gold-light);
+  }
+
+  .translation-feed {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .translation-feed::-webkit-scrollbar { width: 4px; }
+  .translation-feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .trans-entry {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .trans-original {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    line-height: 1.5;
+    direction: rtl;
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .trans-arrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .trans-arrow::before, .trans-arrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .trans-arrow span {
+    font-size: 10px;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .trans-translated {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .trans-time {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  .trans-entry.loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Mic input */
+  .mic-section {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mic-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .mic-input {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .mic-input:focus { border-color: var(--gold-dim); }
+  .mic-input::placeholder { color: var(--muted); }
+
+  .mic-btn {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    background: var(--border);
+    border: none;
+    color: var(--text);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .mic-btn:hover { background: var(--gold-dim); }
+  .mic-btn.recording {
+    background: var(--red);
+    animation: pulse 1s infinite;
+  }
+
+  .translate-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+  }
+  .translate-btn:hover { opacity: 0.9; }
+  .translate-btn:active { opacity: 0.75; }
+
+  /* ── INFO BAR ── */
+  .info-bar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .info-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .info-stat label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .info-stat value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .info-stat value.gold { color: var(--gold-light); }
+  .info-stat value.green { color: var(--green); }
+
+  .setup-guide {
+    flex: 1;
+    text-align: right;
+  }
+  .setup-guide a {
+    color: var(--gold);
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--gold-dim);
+    transition: color 0.2s;
+  }
+  .setup-guide a:hover { color: var(--gold-light); }
+
+  /* ── M3U MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    width: 500px;
+    max-width: 90vw;
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+  .modal p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .modal label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .modal input, .modal select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    outline: none;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .modal input:focus, .modal select:focus { border-color: var(--gold-dim); }
+
+  .modal-btns {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .btn-cancel {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .btn-cancel:hover { color: var(--text); }
+
+  .btn-confirm {
+    flex: 2;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    transition: opacity 0.2s;
+  }
+  .btn-confirm:hover { opacity: 0.9; }
+
+  /* Divider line */
+  .divider { color: var(--muted); font-size: 12px; text-align: center; margin: 4px 0; }
+
+  .preset-url {
+    font-size: 11px;
+    color: var(--blue);
+    background: rgba(64,128,201,0.08);
+    border: 1px solid rgba(64,128,201,0.2);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 16px;
+    word-break: break-all;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .preset-url:hover { background: rgba(64,128,201,0.15); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .main-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .sidebar-channels, .translation-panel { grid-row: auto; }
+    .sidebar-channels { max-height: 300px; }
+    .info-bar { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="zellige-bg"></div>
+
+<div class="app-wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">📡</div>
+      <div class="logo-text">
+        <h1>MarocTV</h1>
+        <span>Chaînes · Sous-titres · Darija</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="dot live" id="statusDot"></div>
+      <span id="statusText">En attente de chaîne…</span>
+    </div>
+    <button class="ctrl-btn" onclick="openModal()">⚙️ Configurer M3U</button>
+  </header>
+
+  <!-- INFO BAR -->
+  <div class="info-bar" style="margin-bottom:20px">
+    <div class="info-stat">
+      <label>Chaînes disponibles</label>
+      <value class="gold" id="channelCount">12</value>
+    </div>
+    <div class="info-stat">
+      <label>Qualité max</label>
+      <value class="green">1080p HD</value>
+    </div>
+    <div class="info-stat">
+      <label>Traduction</label>
+      <value>Darija → FR / EN</value>
+    </div>
+    <div class="info-stat">
+      <label>Source playlist</label>
+      <value style="font-size:12px;color:var(--muted)" id="playlistSource">iptv-org (officiel)</value>
+    </div>
+    <div class="setup-guide">
+      <a href="https://iptv-org.github.io/iptv/countries/ma.m3u" target="_blank">📥 Télécharger la playlist M3U marocaine</a>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- CHANNELS SIDEBAR -->
+    <div class="sidebar-channels">
+      <div class="sidebar-header">
+        <span>📺</span>
+        <h2>Chaînes</h2>
+        <span class="count" id="visibleCount">12</span>
+      </div>
+      <div class="search-wrap">
+        <input type="text" placeholder="Rechercher une chaîne…" id="searchInput" oninput="filterChannels(this.value)">
+      </div>
+      <div class="channels-list" id="channelsList"></div>
+    </div>
+
+    <!-- VIDEO PLAYER -->
+    <div class="player-section">
+      <div class="video-wrap" id="videoWrap">
+        <div class="video-placeholder" id="placeholder">
+          <div class="play-circle" onclick="playSelected()">▶</div>
+          <div class="placeholder-text">Sélectionne une chaîne pour démarrer</div>
+        </div>
+        <video id="videoPlayer" style="display:none;width:100%;height:100%;background:#000" controls></video>
+        <div class="subtitle-overlay" id="subtitleOverlay" style="display:none">
+          <div class="subtitle-text" id="subtitleText"></div>
+        </div>
+      </div>
+      <div class="player-controls">
+        <div class="now-playing">
+          <div class="channel-name" id="nowPlayingName">Aucune chaîne sélectionnée</div>
+          <div class="channel-sub" id="nowPlayingSub">Choisis une chaîne dans la liste</div>
+        </div>
+        <button class="ctrl-btn" id="subtitleBtn" onclick="toggleSubtitles()">💬 Sous-titres OFF</button>
+        <button class="ctrl-btn" onclick="toggleFullscreen()">⛶ Plein écran</button>
+        <button class="ctrl-btn" id="muteBtn" onclick="toggleMute()">🔊</button>
+      </div>
+    </div>
+
+    <!-- TRANSLATION PANEL -->
+    <div class="translation-panel">
+      <div class="panel-header">
+        <span>🗣️</span>
+        <h2>Traduction Darija</h2>
+        <div class="lang-toggle">
+          <button class="lang-btn active" onclick="setLang('fr', this)">FR</button>
+          <button class="lang-btn" onclick="setLang('en', this)">EN</button>
+          <button class="lang-btn" onclick="setLang('ar', this)">عر</button>
+        </div>
+      </div>
+
+      <div class="translation-feed" id="translationFeed">
+        <div style="text-align:center;color:var(--muted);font-size:13px;padding:30px 20px;line-height:1.8">
+          <div style="font-size:32px;margin-bottom:10px">🕌</div>
+          Les traductions s'afficheront ici.<br>
+          Écris du Darija ci-dessous ou active la traduction automatique.
+        </div>
+      </div>
+
+      <div class="mic-section">
+        <div class="mic-row">
+          <input type="text" class="mic-input" id="darijaInput" placeholder="Écris du Darija ici… واش راك" />
+          <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
+        </div>
+        <button class="translate-btn" onclick="translateInput()">✦ Traduire en Darija</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- M3U MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2>⚙️ Configuration M3U</h2>
+    <p>Ajoute ta propre playlist M3U ou utilise la playlist officielle des chaînes marocaines gratuites.</p>
+
+    <label>Playlist recommandée (chaînes marocaines officielles)</label>
+    <div class="preset-url" onclick="usePreset()">
+      https://iptv-org.github.io/iptv/countries/ma.m3u<br>
+      <span style="color:var(--muted);font-size:10px">👆 Clique pour utiliser cette URL</span>
+    </div>
+
+    <label>Ou entre une URL M3U personnalisée</label>
+    <input type="text" id="m3uInput" placeholder="http://example.com/playlist.m3u" />
+
+    <label>Langue de traduction par défaut</label>
+    <select id="langSelect">
+      <option value="fr">Français</option>
+      <option value="en">English</option>
+      <option value="ar">العربية</option>
+    </select>
+
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-confirm" onclick="saveConfig()">✓ Enregistrer & Charger</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+const CHANNELS = [
+  { name: "2M Monde", emoji: "📺", quality: "1080p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/2m_monde/hls_snrt/2m_monde.m3u8", live: true },
+  { name: "Al Aoula Int", emoji: "🏔️", quality: "1080p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/al_aoula_inter/hls_snrt/al_aoula_inter.m3u8", live: true },
+  { name: "Medi1 TV", emoji: "🌍", quality: "720p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/medi1_live/hls/medi1_live.m3u8", live: true },
+  { name: "Arryadia", emoji: "⚽", quality: "720p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/arryadia/hls_snrt/arryadia.m3u8", live: true },
+  { name: "Al Maghribia", emoji: "🌙", quality: "720p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/al_maghribia/hls_snrt/al_maghribia.m3u8", live: true },
+  { name: "Tamazight TV", emoji: "🏺", quality: "720p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/tamazight/hls_snrt/tamazight.m3u8", live: true },
+  { name: "Assadissa", emoji: "🕌", quality: "720p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/assadissa/hls_snrt/assadissa.m3u8", live: true },
+  { name: "Al Oula HD", emoji: "⭐", quality: "1080p", url: "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/al_aoula_hd/hls_snrt/al_aoula_hd.m3u8", live: true },
+  { name: "MBC Masr", emoji: "🎬", quality: "720p", url: "", live: false },
+  { name: "Rotana Clip", emoji: "🎵", quality: "720p", url: "", live: false },
+  { name: "Al Jazeera AR", emoji: "📰", quality: "1080p", url: "https://live-hls-web-aja.getaj.net/AJA/index.m3u8", live: true },
+  { name: "France 24 FR", emoji: "🗞️", quality: "1080p", url: "https://stream.france24.com/hls/live/2037202/F24_FR_LO_HLS/master.m3u8", live: true },
+];
+
+let activeChannel = null;
+let subtitlesOn = false;
+let targetLang = 'fr';
+let isMuted = false;
+let isRecording = false;
+let recognition = null;
+let subTimer = null;
+
+// ── RENDER CHANNELS ──
+function renderChannels(list) {
+  const el = document.getElementById('channelsList');
+  el.innerHTML = list.map((ch, i) => `
+    <div class="channel-item ${activeChannel === i ? 'active' : ''}" onclick="selectChannel(${i})">
+      <div class="ch-logo">${ch.emoji}</div>
+      <div class="ch-info">
+        <div class="ch-name">${ch.name}</div>
+        <div class="ch-quality"><span class="hd-badge">${ch.quality}</span> ${ch.url ? 'Flux disponible' : 'Bientôt'}</div>
+      </div>
+      ${ch.live ? `<div class="ch-live"></div>` : ''}
+    </div>
+  `).join('');
+  document.getElementById('visibleCount').textContent = list.length;
+}
+
+renderChannels(CHANNELS);
+
+function filterChannels(q) {
+  const filtered = CHANNELS.filter(ch => ch.name.toLowerCase().includes(q.toLowerCase()));
+  renderChannels(filtered);
+}
+
+// ── CHANNEL SELECTION ──
+function selectChannel(i) {
+  activeChannel = i;
+  renderChannels(CHANNELS);
+  const ch = CHANNELS[i];
+  document.getElementById('nowPlayingName').textContent = ch.name;
+  document.getElementById('nowPlayingSub').textContent = ch.quality + ' · Chaîne marocaine officielle';
+
+  if (ch.url) {
+    playChannel(ch);
+  } else {
+    document.getElementById('nowPlayingSub').textContent = 'Flux non disponible pour cette chaîne';
+  }
+}
+
+function playSelected() {
+  if (activeChannel !== null) selectChannel(activeChannel);
+}
+
+function playChannel(ch) {
+  const video = document.getElementById('videoPlayer');
+  const placeholder = document.getElementById('placeholder');
+
+  placeholder.style.display = 'none';
+  video.style.display = 'block';
+
+  // Try native HLS first, then fallback message
+  if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = ch.url;
+    video.play().catch(() => showStreamError());
+  } else {
+    // Load HLS.js dynamically
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js';
+    script.onload = () => {
+      if (window.Hls && Hls.isSupported()) {
+        const hls = new Hls({ maxBufferLength: 30 });
+        hls.loadSource(ch.url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play().catch(() => {});
+        });
+        hls.on(Hls.Events.ERROR, (e, d) => {
+          if (d.fatal) showStreamError();
+        });
+      } else {
+        video.src = ch.url;
+        video.play().catch(() => showStreamError());
+      }
+    };
+    document.head.appendChild(script);
+  }
+
+  document.getElementById('statusDot').className = 'dot live';
+  document.getElementById('statusText').textContent = `En direct · ${ch.name}`;
+}
+
+function showStreamError() {
+  const video = document.getElementById('videoPlayer');
+  const placeholder = document.getElementById('placeholder');
+  video.style.display = 'none';
+  placeholder.style.display = 'flex';
+  placeholder.innerHTML = `
+    <div style="font-size:40px">⚠️</div>
+    <div style="color:var(--muted);font-size:14px;text-align:center;max-width:280px;line-height:1.7">
+      Le flux ne peut pas être lu directement dans le navigateur.<br>
+      <span style="color:var(--gold)">Copie l'URL M3U</span> dans <strong>VLC</strong> ou <strong>TiviMate</strong> pour regarder.
+    </div>
+    <button class="ctrl-btn" onclick="copyM3U()" style="margin-top:8px">📋 Copier l'URL de la playlist</button>
+  `;
+}
+
+function copyM3U() {
+  navigator.clipboard.writeText('https://iptv-org.github.io/iptv/countries/ma.m3u')
+    .then(() => alert('✓ URL copiée ! Colle-la dans VLC ou TiviMate.'));
+}
+
+// ── CONTROLS ──
+function toggleSubtitles() {
+  subtitlesOn = !subtitlesOn;
+  const btn = document.getElementById('subtitleBtn');
+  const overlay = document.getElementById('subtitleOverlay');
+  btn.textContent = subtitlesOn ? '💬 Sous-titres ON' : '💬 Sous-titres OFF';
+  btn.className = subtitlesOn ? 'ctrl-btn active' : 'ctrl-btn';
+  overlay.style.display = subtitlesOn ? 'block' : 'none';
+  if (subtitlesOn) simulateSubtitles();
+  else clearTimeout(subTimer);
+}
+
+function toggleMute() {
+  const video = document.getElementById('videoPlayer');
+  isMuted = !isMuted;
+  video.muted = isMuted;
+  document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
+}
+
+function toggleFullscreen() {
+  const wrap = document.getElementById('videoWrap');
+  if (!document.fullscreenElement) wrap.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+// ── SUBTITLE SIMULATION (demo) ──
+const darijaExamples = [
+  { darija: "واش كاين شي جديد؟", fr: "Est-ce qu'il y a quelque chose de nouveau ?", en: "Is there anything new?" },
+  { darija: "الجو زوين اليوم", fr: "Le temps est beau aujourd'hui", en: "The weather is nice today" },
+  { darija: "المنتخب لعب مزيان", fr: "L'équipe nationale a bien joué", en: "The national team played well" },
+  { darija: "خاصنا نحلو هاد المشكل", fr: "On doit résoudre ce problème", en: "We need to solve this problem" },
+  { darija: "الاقتصاد المغربي كيتطور", fr: "L'économie marocaine se développe", en: "The Moroccan economy is developing" },
+  { darija: "راه البرنامج غادي يبدا", fr: "Le programme va commencer", en: "The program is about to start" },
+];
+
+let subIndex = 0;
+function simulateSubtitles() {
+  if (!subtitlesOn) return;
+  const ex = darijaExamples[subIndex % darijaExamples.length];
+  document.getElementById('subtitleText').textContent = targetLang === 'fr' ? ex.fr : ex.en;
+  addTranslationEntry(ex.darija, targetLang === 'fr' ? ex.fr : ex.en);
+  subIndex++;
+  subTimer = setTimeout(simulateSubtitles, 5000);
+}
+
+// ── TRANSLATION FEED ──
+function addTranslationEntry(original, translated) {
+  const feed = document.getElementById('translationFeed');
+  const now = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+  // Clear empty state
+  const empty = feed.querySelector('[style*="text-align:center"]');
+  if (empty) empty.remove();
+
+  const entry = document.createElement('div');
+  entry.className = 'trans-entry';
+  entry.innerHTML = `
+    <div class="trans-original">${original}</div>
+    <div class="trans-arrow"><span>Darija → ${targetLang.toUpperCase()}</span></div>
+    <div class="trans-translated">${translated}</div>
+    <div class="trans-time">${now}</div>
+  `;
+  feed.insertBefore(entry, feed.firstChild);
+
+  // Keep max 20 entries
+  while (feed.children.length > 20) feed.removeChild(feed.lastChild);
+}
+
+// ── TRANSLATE INPUT (via Claude API) ──
+async function translateInput() {
+  const input = document.getElementById('darijaInput').value.trim();
+  if (!input) return;
+
+  const feed = document.getElementById('translationFeed');
+  const empty = feed.querySelector('[style*="text-align:center"]');
+  if (empty) empty.remove();
+
+  // Loading state
+  const loading = document.createElement('div');
+  loading.className = 'trans-entry loading';
+  loading.innerHTML = `<div class="spinner"></div> Traduction en cours…`;
+  feed.insertBefore(loading, feed.firstChild);
+
+  const langLabel = { fr: 'français', en: 'English', ar: 'العربية (arabe standard)' }[targetLang];
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{
+          role: "user",
+          content: `Tu es un expert en Darija marocain. Traduis ce texte en Darija marocain vers le ${langLabel}. 
+Réponds UNIQUEMENT avec un objet JSON : {"original": "texte original", "translation": "traduction", "notes": "note culturelle courte si utile"}
+Texte : "${input}"`
+        }]
+      })
+    });
+    const data = await response.json();
+    const raw = data.content.map(b => b.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(clean);
+
+    loading.remove();
+    addTranslationEntry(result.original, result.translation + (result.notes ? `\n💡 ${result.notes}` : ''));
+    document.getElementById('darijaInput').value = '';
+  } catch (e) {
+    loading.innerHTML = `<span style="color:var(--red)">⚠️ Erreur de traduction. Réessaie.</span>`;
+    setTimeout(() => loading.remove(), 3000);
+  }
+}
+
+// Enter key
+document.getElementById('darijaInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') translateInput();
+});
+
+// ── MIC (Speech Recognition) ──
+function toggleMic() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('La reconnaissance vocale n\'est pas supportée par ton navigateur. Utilise Chrome.');
+    return;
+  }
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'ar-MA';
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  recognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    document.getElementById('darijaInput').value = transcript;
+    if (e.results[0].isFinal) translateInput();
+  };
+
+  recognition.onend = () => stopRecording();
+  recognition.onerror = () => stopRecording();
+  recognition.start();
+
+  isRecording = true;
+  document.getElementById('micBtn').className = 'mic-btn recording';
+  document.getElementById('micBtn').textContent = '⏹';
+}
+
+function stopRecording() {
+  if (recognition) { recognition.stop(); recognition = null; }
+  isRecording = false;
+  document.getElementById('micBtn').className = 'mic-btn';
+  document.getElementById('micBtn').textContent = '🎤';
+}
+
+// ── LANG TOGGLE ──
+function setLang(lang, btn) {
+  targetLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── MODAL ──
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function usePreset() {
+  document.getElementById('m3uInput').value = 'https://iptv-org.github.io/iptv/countries/ma.m3u';
+}
+function saveConfig() {
+  const url = document.getElementById('m3uInput').value.trim();
+  const lang = document.getElementById('langSelect').value;
+  targetLang = lang;
+  if (url) document.getElementById('playlistSource').textContent = 'Playlist personnalisée';
+  closeModal();
+  alert(`✓ Configuration sauvegardée !\nPour lire les chaînes en direct, copie l'URL M3U dans VLC ou TiviMate.`);
+}
+
+// Click outside modal to close
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
